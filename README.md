@@ -5,6 +5,9 @@ Repozytorium grupy na Warsztaty Badawcze 2021
 3. Bartosz Siński
 
 Wydział Matematyki i Nauk Informacyjnych
+
 Inżynieria i Analiza Danych
+
 Analizowany zbiór:
+
 https://www.kaggle.com/uciml/red-wine-quality-cortez-et-al-2009
