@@ -54,6 +54,14 @@ After checking the operation of the models on the test set, the following qualit
 
 TODO: po podrozdziale na każdą metodę; po kilka wykresów i parę-kilkanaście zdań
 
+#### Break Down / Shapley Values (?)
+
+#### LIME
+
+#### Ceteris Paribus
+
+#### PDP & ALE
+
 ### Summary
 
 TODO: hurra im wino mocniejsze tym lepsze, ale nie do konca
