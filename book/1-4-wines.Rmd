@@ -10,7 +10,12 @@ Wine is one of the most widespread and culturally significant drinks in the worl
 
 Term 'glass box models' refers to interpretable machine learning models - user can explicitly see how they work, and follow the steps from inputs to outputs.  The case is completely different in the case of the very advanced black box models. The goal of explainable machine learning is to allow human to inspect the factors behind results given by the model. 
 
-There are numerous projects on the Internet that look at the Red Wine Quality dataset^1^ from both perspectives. However, due to the nuanced nature of the problem, many of them don't allow us to draw any constructive conclusions concerning the impact that various physicochemical properties have on the quality of wine. The goal of this chapter is to implement XAI solutions in terms of the analysis of the above-mentioned dataset and to confront results with  previous research and literature on the subject.
+There are numerous projects on the Internet that look at the Red Wine Quality dataset^1^ from both perspectives. However, due to the nuanced nature of the problem, many of them don't allow us to draw any constructive conclusions concerning the impact that various physicochemical properties have on the quality of wine. Our goal was to implement XAI solutions in terms of the analysis of the above-mentioned dataset and to confront results with  previous research and literature on the subject.
+
+In this study, we will be taking a look at all the variables included in our dataset, while paying some special attention to one that seems to be standing out the most - the alcohol content. It is also the one that is the most recognizable to an average consumer and, in contrast to other physicochemical properties, is easily found on every wine label.
+
+While analysing the results, we have to keep in mind the obvious limitations associated with the subject. Not only is the perception of the quality of wine an inherently subjective property, but it is also affected by factors not included in the data, such as the color of the wine or the temperature in which the drink was served.
+
 
 
 
@@ -34,7 +39,12 @@ The original collection contains 1 600 observations, each representing one Portu
 
 The decision variable was originally *quality* - the median rating of an assembly of minimum 3 experts, who made their classification on a scale from 0 to 10. Due to the capabilities of the analyzed XAI tools, our team decided to make it a binary classification problem, assigning the wines rated <= 5 value 0, and others - value  1. It resulted in an intuitive "bad / good" wine classification,  which gave us 855 "good" and 744 "bad" wines.
 
-![](images/1-4-01targetCounts.png)
+
+
+
+```{r targetCounts, out.width="700", fig.align="center", echo=FALSE, fig.cap='Distribution of target before and after transformation'}
+knitr::include_graphics('images/1-4-01targetCounts.png')
+```
 
 #### Machine learning algorithms used
 
@@ -52,11 +62,33 @@ All solutions have been implemented in Python with random states set to 42. The 
 
 After checking the operation of the models on the test set, the following quality measures were obtained:
 
-![](images/1-4-02ModelsMeasures.png)
+```{r modelMeasures, out.width="700", fig.align="center", echo=FALSE, fig.cap='Results achieved by models after applying hyperparameter tuning'}
+knitr::include_graphics('images/1-4-02ModelsMeasures.png')
+```
 
-### Results
+### Global explanations
 
-TODO: po podrozdziale na każdą metodę; po kilka wykresów i parę-kilkanaście zdań. Może tak jak na prezce - najpierw globalne, potem lokalne.
+#### Permutance-based variable importance
+
+```{r permutance_xgb, out.width="700", fig.align="center", echo=FALSE, fig.cap='Permutance-based variable importance plot for tuned XGBoost model'}
+knitr::include_graphics('images/1-4-03permutance_xgb.png')
+```
+
+Our starting point was rendering a permutance-based variable importance plot using our XGBoost model to examine which variables play the biggest role in model's decision. Surprisingly, all of them seem to have a positive impact on the accuracy of the prediction. This, combined with a relatively small size of our dataset, led us to decision not to exclude any variables in further proceedings. However, the importances of the variables vary greatly - alcohol and sulphates together overcome all other factors combined. (todo: przypisy do metod?)
+
+
+#### Mean absolute SHAP value
+
+```{r meanShap_xgb, out.width="700", fig.align="center", echo=FALSE, fig.cap='Mean absolute SHAP value for tuned XGBoost model'}
+knitr::include_graphics('images/1-4-04meanShap_xgb.png')
+```
+ In order to gain a different perspective, we examined a plot of mean absolute SHAP values of our model. Although this method differs significantly from above-mentioned permutance-based variable importance, it provided us with a simillar information on the hierarchy of importance of the variables - once again, alcohol seems to be the biggest factor, followed by sulphates. Analysing those plots encouraged us to take a closer look at the role that alcohol content plays on the prediction.
+
+#### PDP & ALE
+
+
+
+
 
 #### Break Down / Shapley Values (?)
 
