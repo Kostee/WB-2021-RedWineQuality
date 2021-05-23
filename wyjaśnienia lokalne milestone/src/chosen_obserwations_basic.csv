@@ -1,0 +1,17 @@
+,test set id,original id,details,actual,XGBoost,Support Vector Machine,Random Forest,Gradient Boosting
+0,0,918,all TP #1,1,1,1,1,1
+1,3,269,all TP #2,1,1,1,1,1
+2,8,956,all TP #3,1,1,1,1,1
+3,4,240,all TN #1,0,0,0,0,0
+4,7,1461,all TN #2,0,0,0,0,0
+5,9,1260,all TN #3,0,0,0,0,0
+6,15,1367,all FN #1,1,0,0,0,0
+7,20,645,all FN #2,1,0,0,0,0
+8,10,1546,all FP #1,0,1,1,1,1
+9,24,1487,all FP #2,0,1,1,1,1
+10,5,605,"XGBoost TP, others FN",1,1,0,0,0
+11,166,1285,"XGBoost TN, others FP",0,0,1,1,1
+12,57,1342,"SVM TP, others FN",1,0,1,0,0
+13,6,885,"SVM TN, others FP",0,1,0,1,1
+14,260,1019,"Random Forest TN, others FP",0,1,1,0,1
+15,31,1283,"Gradient Boosting TP, others FN",1,0,0,0,1
