@@ -16,9 +16,6 @@ In this study, we will be taking a look at all the variables included in our dat
 
 While analysing the results, we have to keep in mind the obvious limitations associated with the subject. Not only is the perception of the quality of wine an inherently subjective property, but it is also affected by factors not included in the data, such as the color of the wine or the temperature in which the drink was served.
 
-
-
-
 ### Methodology
 
 #### Dataset
@@ -38,9 +35,6 @@ The original collection contains 1 600 observations, each representing one Portu
 * *alcohol* - alcohol by volume percentage
 
 The decision variable was originally *quality* - the median rating of an assembly of minimum 3 experts, who made their classification on a scale from 0 to 10. Due to the capabilities of the analyzed XAI tools, our team decided to make it a binary classification problem, assigning the wines rated <= 5 value 0, and others - value  1. It resulted in an intuitive "bad / good" wine classification,  which gave us 855 "good" and 744 "bad" wines.
-
-
-
 
 ```{r targetCounts, out.width="700", fig.align="center", echo=FALSE, fig.cap='Distribution of target before and after transformation'}
 knitr::include_graphics('images/1-4-01targetCounts.png')
@@ -66,15 +60,23 @@ After checking the operation of the models on the test set, the following qualit
 knitr::include_graphics('images/1-4-02ModelsMeasures.png')
 ```
 
+#### Selected observations for analysis
+
+For a better overview of the entire data set, we decided to select a few representative observations through the prism of the entire set. For this purpose, we made a selection of 16 rows from the test set, which were distinguished by the features described in the table.
+
+```{r chosenObservations, out.width="700", fig.align="center", echo=FALSE, fig.cap='16 representative observations'}
+knitr::include_graphics('images/1-4-05chosenObservations.png')
+```
+
 ### Global explanations
 
-#### Permutance-based variable importance
+#### Permutation-based variable importance
 
-```{r permutance_xgb, out.width="700", fig.align="center", echo=FALSE, fig.cap='Permutance-based variable importance plot for tuned XGBoost model'}
+```{r permutance_xgb, out.width="700", fig.align="center", echo=FALSE, fig.cap='Permutation-based variable importance plot for tuned XGBoost model'}
 knitr::include_graphics('images/1-4-03permutance_xgb.png')
 ```
 
-Our starting point was rendering a permutance-based variable importance plot using our XGBoost model to examine which variables play the biggest role in model's decision. Surprisingly, all of them seem to have a positive impact on the accuracy of the prediction. This, combined with a relatively small size of our dataset, led us to decision not to exclude any variables in further proceedings. However, the importances of the variables vary greatly - alcohol and sulphates together overcome all other factors combined. (todo: przypisy do metod?)
+Our starting point was rendering a permutation-based variable importance^11^ plot from *DALEX* pacage^10^ using our XGBoost model to examine which variables play the biggest role in model's decision. Surprisingly, all of them seem to have a positive impact on the accuracy of the prediction. This, combined with a relatively small size of our dataset, led us to decision not to exclude any variables in further proceedings. However, the importances of the variables vary greatly - alcohol and sulphates together overcome all other factors combined. (todo: przypisy do metod?)
 
 
 #### Mean absolute SHAP value
@@ -82,29 +84,54 @@ Our starting point was rendering a permutance-based variable importance plot usi
 ```{r meanShap_xgb, out.width="700", fig.align="center", echo=FALSE, fig.cap='Mean absolute SHAP value for tuned XGBoost model'}
 knitr::include_graphics('images/1-4-04meanShap_xgb.png')
 ```
- In order to gain a different perspective, we examined a plot of mean absolute SHAP values of our model. Although this method differs significantly from above-mentioned permutance-based variable importance, it provided us with a simillar information on the hierarchy of importance of the variables - once again, alcohol seems to be the biggest factor, followed by sulphates. Analysing those plots encouraged us to take a closer look at the role that alcohol content plays on the prediction.
+ In order to gain a different perspective, we examined a plot of mean absolute SHAP^12^ values from *DALEX* package^10^ of our model. Although this method differs significantly from above-mentioned permutation-based variable importance, it provided us with a simillar information on the hierarchy of importance of the variables - once again, alcohol seems to be the biggest factor, followed by sulphates. Analysing those plots encouraged us to take a closer look at the role that alcohol content plays on the prediction.
 
 #### PDP & ALE
-
-
-
 
 
 #### Break Down / Shapley Values (?)
 
 #### LIME
 
+In order to look at the explainability of individual predictions, the LIME^13^ method from *DALEX*^10^ package was used. When looking at individual visualizations, it is easy to see that extreme alcohol values have the greatest impact on the prediction value. This is clearly visible on the example of incorrectly classified observations - in a significant number of cases it is the non-standard value of alcohol that largely determines the incorrect prediction. The situation is well illustrated by two graphs generated on the basis of 16 previously selected observations - here: badly classified, analyzing the *XGBoost* model.
+
+```{r lime1, out.width="700", fig.align="center", echo=FALSE, fig.cap='LIME method: example 1'}
+knitr::include_graphics('images/1-4-06LIME1.png')
+```
+
+```{r lime2, out.width="700", fig.align="center", echo=FALSE, fig.cap='LIME method: example 2'}
+knitr::include_graphics('images/1-4-07LIME2.png')
+```
+
+However, in this case, alcohol does not always dominate, and the prediction result for the *XGBoost* model is indeed a component of many elements. However, it has to be considered that the *LIME* method in this case takes into account only certain automatically selected intervals, which, when combined, do not fully represent the essence of the algorithm.
+
 #### Ceteris Paribus
 
-#### PDP & ALE
+### Confrontation with science
+
+The subject of the quality of wines in relation to their alcohol content has been studied many times before by other scientists. The topic was covered, among others, by Rachel England from the *Cult wines* blog^14^. In 2009, he pointed that "It is true that alcohol in wine tends to draw out more intense, bold flavours, so the higher the alcohol level, the fuller the body". Certainly, the phenomenon is also confirmed by the popular fact of preferences of esteemed former wine critic Robert Parker, who was well known for awarding higher scores to higher alcohol wines. On the other hand, lower alcohol wines tend to offer greater balance and pair better with foods. Hence, too much content is also not an advantage in terms of quality.
+
+The phenomenon was also examined by the newspaper the Seattle Times, which published an article in 2003 entitled *Does a higher alcohol content mean it's a better drinking wine?*^15^. The expert emphasizes that Higher alcohol is an indication of better ripeness at harvest and fermentation to complete or near-complete dryness. With time, the wines are also getting stronger, which is the result of better vineyard practices, letting the grapes get more "hang time," and more efficient yeasts, which definitely has a positive effect on the quality. Here, however, the argument for not too high alcohol content is also emphasized, due to the fact that wines with more than 15 percent are almost never ageworthy. The high alcohol throws the balance off and is often accompanied by too much oak and too much tannin. These wines are also hard to drink, as they do not match well with most foods.
+
+It is also worth comparing an article from the *Decanter* website from 2010^16^ with the results of our study. As a person well acquainted with the subject, the expert considers the alcohol threshold of a good wine, reaching out to considerations consistent with the results of our calculations.
+
+TODO:
+https://www.mdpi.com/2306-5710/1/4/292/htm
+
+gdzie jest fajnie opisany wpływ alkoholu na odbiór wina
+ale też w rozdziale siódmym trochę dają dużo powodów dla których wysoka zawartość alkoholu źle wpływa na jakość wina
+
+https://primo-48tuw.hosted.exlibrisgroup.com/primo-explore/fulldisplay?docid=TN_cdi_gale_infotracacademiconefile_A197071646&context=PC&vid=48TUW_VIEW&lang=pl_PL&search_scope=primo_all_scope&adaptor=primo_central_multiple_fe&tab=default_tab&query=any,contains,EFFECT%20OF%20ETHANOL%20LEVEL%20IN%20THE%20PERCEPTION%20OF%20AROMA%20ATTRIBUTES%20AND%20THE%20DETECTION%20OF%20VOLATILE%20COMPOUNDS%20IN%20RED%20WINE&mode=basic
 
 ### Summary
 
-TODO: hurra im wino mocniejsze tym lepsze, ale nie do konca
+TODO: hurra im wino mocniejsze tym lepsze, ale nie do konca; jest zgodność z zewnętznymi artykułami
 
 ### Conclusions
 
 TODO: yay XAI jest super, czarne skrzynki można tlumaczyc, dokonalismy przelomu
+
+TODO: Refleksja, którą wypadałoby zawrzeć: w zbiorze rozpatrujemy tylko oryginalne portugalskie wina verde, zaś nie wina sztucznie wzmacniane czy mieszane z nieregularnymi składnikami. W efekcie mamy tu styczność z dobrymi danymi wejściowymi do rozważań nad klasycznymi winami w ogólniejszym sensie; wyniki badania nie będą jednak miały odwzorowania w ocenie i dyskusji nad przetworami niskiej jakości oraz dodatkowo przetworzonymi w nietradycyjny sposób
 
 ### References
 
@@ -134,3 +161,23 @@ https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestC
 
 *^9^Gradient Boosting classifier from sklearn*
 https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.GradientBoostingClassifier.html
+
+*^10^DALEX: moDel Agnostic Language for Exploration and eXplanation*
+https://github.com/ModelOriented/DALEX
+
+*^11^Permutation-based variable importance: model inspection technique that can be used for any fitted estimator when the data is tabular. This is especially useful for non-linear or opaque estimators. The permutation feature importance is defined to be the decrease in a model score when a single feature value is randomly shuffled*
+https://scikit-learn.org/stable/modules/permutation_importance.html
+
+*^12^SHAP(SHapley Additive exPlanations): game theoretic approach to explain the output of any machine learning model. It connects optimal credit allocation with local explanations using the classic*
+https://shap.readthedocs.io/en/latest/index.html
+
+*^13^LIME(Local Interpretable Model-agnostic Explanations): visualization technique that helps explain individual predictions. It is model agnostic so it can be applied to any supervised regression or classification model*
+
+*^14^Cult Wines: Wine’s alcohol levels explained, 5th June 2019*
+https://www.wineinvestment.com/wine-blog/2019/05/wines-alcohol-levels-explained
+
+*^15^The Seattle Times: Does a higher alcohol content mean it's a better drinking wine?, 8th October 2003*
+https://archive.seattletimes.com/archive/?date=20031008&slug=wineqanda08
+
+*^16^Decanter: Alcohol levels: the balancing act, 22nd March 2010*
+https://www.decanter.com/features/alcohol-levels-the-balancing-act-246426/
