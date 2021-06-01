@@ -181,7 +181,7 @@ The idea of a threshold of an alcohol content, beyond which wines lose their qua
 changed dramatically with the level of ethanol content in the wine, but the change isn't consistent among all chemical compounds.  
 
 
-Another very interesting topic is the idea of reducing  the alcohol content in wine after initial production process [@1-4-wines-jordao]. Motivation behind that is to try to keep all the good aromas and qualities associated with stronger wines, while simultaneously lowering excessive alcohol which causes bitter or sour tastes. Such attempts ended in mixed results, but evidence suggests that it may be possible to lower alcohol content by one percentage point without losing much aromas.
+Another very interesting topic is the idea of reducing  the alcohol content in wine after initial production process [@1-4-wines-jordao]. Motivation behind that is to try to keep all the good aromas and qualities associated with stronger wines, while simultaneously lowering excessive alcohol which causes bitter or sour tastes. Such attempts ended in mixed results, but evidence suggests that it may be possible to lower alcohol content by one percentage point without losing many aromas.
 
 
 
