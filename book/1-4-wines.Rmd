@@ -89,7 +89,21 @@ knitr::include_graphics('images/1-4-04meanShap_xgb.png')
 #### PDP & ALE
 
 
-#### Break Down / Shapley Values (?)
+#### Break Down and Shapley Additive Explanations (SHAP) 
+The first method that we have used for our explanations is Shapley Additive Explanations (SHAP). It is based on another explanatory method called Break-Down, which similarly to SHAP is used to compute variables' attribution to the model's prediction. Break-Down method fixes values of variables in sequence and looks at changes in label value. Moreover, as we can see in figure \*.\* this method is sensitive to the order of variables.
+```{r breakdownplot, out.width="700", fig.align="center", echo=FALSE}
+knitr::include_graphics('images/1-4-05breakdown_plots.png')
+```
+All three presented plots describe the same observation with different sequences of examined variables. When density was fixed as the first one, it showed a great positive impact on rising wine's rating. However, the second plot presents a situation where density was third fixed variable and its value lowered the prediction. This dependency on order made it harder for us to conclude about specific wines. Fortunately
+Shapley Additive Explanations method (SHAP) resolves this issue by averaging results for different permutations of variables.As an example, you can see computed Shapley values for same observation in figure \*.\*
+```{r shapplot97, out.width="700", fig.align="center", echo=FALSE}
+knitr::include_graphics('images/1-4-06shap_97.png')
+```
+Here our model was certain about assigning wine to good ones. Nearly all factors contributed to increasing wine's rating. Not surprisingly, alcohol and sulphates had the biggest influence on the model's prediction. Only free sulfur dioxide and pH had worsened the quality of wine, which according to global explanations are practically irrelevant variables to our model. 
+On the contrary figure *.* presents an observation where all attributes except volatile acidity lowered the rating of our wine. From the values of particular variables, we can see that these wines are completely different, which explains model's distant assessments. Furthermore, exact values that our model understands as beneficial for wine start to emerge. To get a closer look we will have to use new method described in the following section.
+```{r shapplot19, out.width="700", fig.align="center", echo=FALSE}
+knitr::include_graphics('images/1-4-07shap19.png')
+```
 
 #### LIME
 
@@ -107,6 +121,16 @@ However, in this case, alcohol does not always dominate, and the prediction resu
 
 #### Ceteris Paribus
 
+Analyzing results from LIME brought to light yet another issue. Is it possible to change wine's rating by altering the alcohol content? Answers to this question were provided by a mentioned earlier method called Ceteris Paribus. “Ceteris paribus” is a Latin phrase meaning “other things held constant” which accurately describes the main concept of method. Ceteris Paribus illustrates the response of a model to changing a single variable while fixing the values of others.  As an example, we will use observation from the previous section which our model incorrectly
+labeled as the bad one. We quietly assumed that it was due to low alcohol content, but now we can verify our thesis.
+
+```{r cp1, out.height="300", fig.align="center", echo=FALSE}
+knitr::include_graphics('images/1-4-08cp1.png')
+```
+Indeed if our wine was less than a half percent stronger, the model would properly give it a higher rating. However, rising alcohol levels in not always an answer. For instance, very strong wine with 14.7%  alcohol presented in figure \*.\* would benefit from a reduction of alcohol content. 
+```{r cp2, out.height="300", fig.align="center", echo=FALSE}
+knitr::include_graphics('images/1-4-09cp2.png')
+```
 ### Confrontation with science
 
 The subject of the quality of wines in relation to their alcohol content has been studied many times before by other scientists. The topic was covered, among others, by Rachel England from the *Cult wines* blog^14^. In 2009, he pointed that "It is true that alcohol in wine tends to draw out more intense, bold flavours, so the higher the alcohol level, the fuller the body". Certainly, the phenomenon is also confirmed by the popular fact of preferences of esteemed former wine critic Robert Parker, who was well known for awarding higher scores to higher alcohol wines. On the other hand, lower alcohol wines tend to offer greater balance and pair better with foods. Hence, too much content is also not an advantage in terms of quality.
