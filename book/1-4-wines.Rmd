@@ -131,6 +131,7 @@ Indeed if our wine was less than a half percent stronger, the model would proper
 ```{r cp2, out.height="300", fig.align="center", echo=FALSE}
 knitr::include_graphics('images/1-4-09cp2.png')
 ```
+
 ### Confrontation with science
 
 The subject of the quality of wines in relation to their alcohol content has been studied many times before by other scientists. The topic was covered, among others, by Rachel England from the *Cult wines* blog^14^. In 2009, he pointed that "It is true that alcohol in wine tends to draw out more intense, bold flavours, so the higher the alcohol level, the fuller the body". Certainly, the phenomenon is also confirmed by the popular fact of preferences of esteemed former wine critic Robert Parker, who was well known for awarding higher scores to higher alcohol wines. On the other hand, lower alcohol wines tend to offer greater balance and pair better with foods. Hence, too much content is also not an advantage in terms of quality.
@@ -139,8 +140,10 @@ The phenomenon was also examined by the newspaper the Seattle Times, which publi
 
 It is also worth comparing an article from the *Decanter* website from 2010^16^ with the results of our study. As a person well acquainted with the subject, the expert considers the alcohol threshold of a good wine, reaching out to considerations consistent with the results of our calculations.
 
+Professional research was conducted in 2015. Experts António M. Jordão, Alice Vilela and Fernanda Cosme completed a set of activities, the result of which was the article *From Sugar of Grape to Alcohol of Wine: Sensorial Impact of Alcohol in Wine*. They indicated in it that the quality of grapes, as well as wine quality, flavor, stability, and sensorial characteristics depends on the content and composition of several different groups of compounds from grapes. One of these groups of compounds are sugars and consequently the alcohol content quantified in wines after alcoholic fermentation. During grape berry ripening, sucrose transported from the leaves is accumulated in the berry vacuoles as glucose and fructose. 
+
 TODO:
-https://www.mdpi.com/2306-5710/1/4/292/htm
+https://www.mdpi.com/2306-5710/1/4/292/htm (zaczete wyzej)
 
 gdzie jest fajnie opisany wpływ alkoholu na odbiór wina
 ale też w rozdziale siódmym trochę dają dużo powodów dla których wysoka zawartość alkoholu źle wpływa na jakość wina
@@ -205,3 +208,6 @@ https://archive.seattletimes.com/archive/?date=20031008&slug=wineqanda08
 
 *^16^Decanter: Alcohol levels: the balancing act, 22nd March 2010*
 https://www.decanter.com/features/alcohol-levels-the-balancing-act-246426/
+
+*^17^MDPI: From Sugar of Grape to Alcohol of Wine: Sensorial Impact of Alcohol in Wine, 30th August 2015*
+https://www.mdpi.com/2306-5710/1/4/292/htm
