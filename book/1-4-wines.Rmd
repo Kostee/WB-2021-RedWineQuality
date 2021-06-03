@@ -2,19 +2,19 @@
 bibliography: book.bib
 ---
 
-## Red wine mystery: using explainable AI to inspect factors behind wine quality{#xai1-explainable-wine} 
+## Red wine mystery: using explainable AI to inspect factors behind wine quality {#xai1-explainable-wine} 
 
 *Authors: Jakub Kosterna, Bartosz Siński, Jan Smoleń (Warsaw University of Technology)*
 
 ### Abstract
 
-Wine is one of the most widespread and culturally significant drinks in the world. However, the factors determining its quality remain a mystery to the absolute majority of people.  There are many variables contributing to the final effect and it seems unclear which ones are crucial in making some wines better than others. In this paper, we have looked at this issue from a fresh perspective using Red Wine Quality from Kaggle community dataset^1^. Much to our initial surprise, despite the fact that a dozen or so chemical factors were taken into account, there is one that stands out and seems to be the main predictor of the drink's quality - it is alcohol. The study used four black box models interpreted through modern methods of explainable artificial intelligence to explore the subject.
+Wine is one of the most widespread and culturally significant drinks in the world. However, the factors determining its quality remain a mystery to the absolute majority of people.  There are many variables contributing to the final effect and it seems unclear which ones are crucial in making some wines better than others. In this paper, we have looked at this issue from a fresh perspective using Red Wine Quality from Kaggle community dataset. Much to our initial surprise, despite the fact that a dozen or so chemical factors were taken into account, there is one that stands out and seems to be the main predictor of the drink's quality - it is alcohol. The study used four black box models interpreted through modern methods of explainable artificial intelligence to explore the subject.
 
 ### Introduction and Motivation
 
-Term 'glass box models' refers to interpretable machine learning models - user can explicitly see how they work, and follow the steps from inputs to outputs.  The case is completely different in the case of the very advanced black box models. The goal of explainable machine learning is to allow human to inspect the factors behind results given by the model. 
+Term 'glass box models' refers to interpretable machine learning models - user can explicitly see how they work, and follow the steps from inputs to outputs.  The case is completely different in the case of the very advanced black box models. The goal of explainable machine learning is to allow a human user to inspect the factors behind results given by the model [@dalex].
 
-There are numerous projects on the Internet that look at the Red Wine Quality dataset^1^ from both perspectives. However, due to the nuanced nature of the problem, many of them don't allow us to draw any constructive conclusions concerning the impact that various physicochemical properties have on the quality of wine. Our goal was to implement XAI solutions in terms of the analysis of the above-mentioned dataset and to confront results with  previous research and literature on the subject.
+There are numerous projects on the Internet that look at the Red Wine Quality dataset from different perspectives. However, due to the nuanced nature of the problem, many of them don't allow us to draw any constructive conclusions concerning the impact that various physicochemical properties have on the quality of wine. Our goal was to implement XAI solutions in terms of the analysis of the above-mentioned dataset and to confront results with  previous research and literature on the subject.
 
 In this study, we will be taking a look at all the variables included in our dataset, while paying some special attention to one that seems to be standing out the most - the alcohol content. It is also the one that is the most recognizable to an average consumer and, in contrast to other physicochemical properties, is easily found on every wine label.
 
@@ -48,13 +48,13 @@ knitr::include_graphics('images/1-4-01targetCounts.png')
 
 In order to look at the nature of this data, four well-known algorithms have been trained from data divided into: 1199 observations for the training set and 400 for the test set.
 
-1. **XGBoost** (*gbm*) - powerful modern method based on *AdaBoost*^2^ and gradient boosting, imported from *xgboost* package^3^, with tuned hyperparameters using the randomized search method from *sklearn* package^4^, with the best values obtained: *min_child_weight* - 1, *max_depth* - 12, *learning_rate* - 0.05, *gamma* - 0.2 and *colsample_bytree* - 0.7
+1. **XGBoost** (*gbm*) - powerful modern method based on *AdaBoost* and gradient boosting, imported from *xgboost* package, with tuned hyperparameters using the randomized search method from *sklearn* package, with the best values obtained: *min_child_weight* - 1, *max_depth* - 12, *learning_rate* - 0.05, *gamma* - 0.2 and *colsample_bytree* - 0.7
 
-2. **Support Vector Machine** (*svm*) - algorithm, in which we plot each data item as a point in n-dimensional space (where n is number of features you have) with the value of each feature being the value of a particular coordinate. Then, we perform classification by finding the hyper-plane that differentiates the two classes very well; imported from *sklearn* package^5^, with tuned hyperparameters using the grid search method from *sklearn* package^6^, with the best values obteined: *C* - 10000, *gamma* - 0.0001 and *kernel* - rbf
+2. **Support Vector Machine** (*svm*) - algorithm, in which we plot each data item as a point in n-dimensional space (where n is number of features) with the value of each feature being the value of a particular coordinate. Then, we perform classification by finding the hyper-plane that differentiates the two classes very well; imported from *sklearn* package, with tuned hyperparameters using the grid search method from *sklearn* package, with the best values obteined: *C* - 10000, *gamma* - 0.0001 and *kernel* - rbf
 
-3. **Random Forest** (*rfm*) - method building multiple decision trees^7^ and merges them together to get a more accurate and stable prediction; imported from *sklearn* package^8^, with tuned hyperparameters using the randomized search method from *sklearn* package^4^, with the best values obtained: *n_estimators* - 2000, *min_samples_split* - 2, *min_samples_leaf* - 2, *max_features* - auto, *max_depth* - 100 and *bootstrap* - True
+3. **Random Forest** (*rfm*) - method building multiple decision trees and merges them together to get a more accurate and stable prediction; imported from *sklearn* package, with tuned hyperparameters using the randomized search method from *sklearn* package^4^, with the best values obtained: *n_estimators* - 2000, *min_samples_split* - 2, *min_samples_leaf* - 2, *max_features* - auto, *max_depth* - 100 and *bootstrap* - True
 
-4. **Gradient Boosting** (*xgm*) - a type of machine learning boosting. It relies on the intuition that the best possible next model, when combined with previous models, minimizes the overall prediction error; imported from *sklearn* package^9^, with tuned hyperparameters using the grid search method from *sklearn* package^6^, with the best values obteined: *learning_rate* - 0.1, *max_depth* - 7 and *n_estimators* - 50
+4. **Gradient Boosting** (*xgm*) - a type of machine learning boosting. It relies on the intuition that the best possible next model, when combined with previous models, minimizes the overall prediction error; imported from *sklearn* package, with tuned hyperparameters using the grid search method from *sklearn* package, with the best values obteined: *learning_rate* - 0.1, *max_depth* - 7 and *n_estimators* - 50
 
 All methods have been implemented in Python with random states set to 42. The choice of these methods was made on the basis of their popularity, diversity and practicality, taking into account the essence of the problem under consideration.
 
@@ -76,60 +76,52 @@ After checking the operation of the models on the test set, the following qualit
 
 
 
-#### Selected observations for analysis
-
-For a better overview of the entire data set, we decided to select a few representative observations through the prism of the entire set. For this purpose, we made a selection of 16 rows from the test set, which were distinguished by the features described in the table.
-
-```{r chosenObservations, out.width="700", fig.align="center", echo=FALSE, fig.cap='16 representative observations'}
-knitr::include_graphics('images/1-4-05chosenObservations.png')
-```
-
 ### Global explanations
 
 #### Permutation-based variable importance
 
-```{r permutancexgb, out.width="700", fig.align="center", echo=FALSE, fig.cap='Permutation-based variable importance plot for tuned XGBoost model'}
+```{r permutancexgb, out.width="700", fig.align="center", echo=FALSE, fig.cap='Permutation-based variable importance plot for tuned XGBoost model. In this case, size of the bar indicates the positive impact that a feature has on accuracy of the model'}
 knitr::include_graphics('images/1-4-03permutance_xgb.png')
 ```
 
-Our starting point was rendering a permutation-based variable importance^11^ plot from *DALEX* pacage^10^ using our XGBoost model to examine which variables play the biggest role in model's decision. Surprisingly, all of them seem to have a positive impact on the accuracy of the prediction. This, combined with a relatively small size of our dataset, led us to decision not to exclude any variables in further proceedings. However, the importance of the variables varies greatly - alcohol and sulphates together overcome all other factors combined. 
+Our starting point was rendering a permutation-based variable importance plot from *DALEX* pacage using our XGBoost model to examine which variables play the biggest role in model's decision [@dalex]. The goal of this method is to inspect which variables have positive impact on the accuracy of the prediction. Surprisingly, all of them seemed to provide information that benefited the accuracy of the model. This, combined with a relatively small size of our dataset, led us to decision not to exclude any variables in further proceedings. However, the importance of the variables varies greatly - alcohol and sulphates together overcome all other factors combined. 
 
 
 #### Mean absolute SHAP value
 
-```{r meanShapxgb, out.width="700", fig.align="center", echo=FALSE, fig.cap='Mean absolute SHAP value for tuned XGBoost model'}
+```{r meanShapxgb, out.width="700", fig.align="center", echo=FALSE, fig.cap='Mean absolute SHAP value for tuned XGBoost model. Size of the bar indicates how much a feature influences the prediction on average'}
 knitr::include_graphics('images/1-4-04meanShap_xgb.png')
 ```
- In order to gain a different perspective, we examined a plot of mean absolute SHAP^12^ values from *DALEX* package^10^ of our model. Although this method differs significantly from the above-mentioned permutation-based variable importance, it provided us with a similar information on the hierarchy of importance of the variables - once again, alcohol seems to be the biggest factor, followed by sulphates. Analysing those plots encouraged us to take a closer look at the role that alcohol content plays on the prediction.
+ In order to gain a different perspective, we examined a plot of mean absolute SHAP values of our model [@xai1-shapleyvalues]. SHAP method is explained in chapter [Break Down and Shapley Additive Explanations (SHAP)]. Mean absoulte SHAP value can give us insight into which variables influence the predictions the most.  Although this method differs significantly from the above-mentioned permutation-based variable importance, it provided us with a similar information on the hierarchy of importance of the variables - once again, alcohol seems to be the biggest factor, followed by sulphates. Analysing those plots encouraged us to take a closer look at the role that alcohol content plays on the prediction.
 
 #### PDP
 
-```{r pdp, out.width="700", fig.align="center", echo=FALSE, fig.cap='Partial Dependence Plot for all models'}
+```{r pdp, out.width="700", fig.align="center", echo=FALSE, fig.cap='Partial Dependence Plot for all models. Lines represent the average prediction by the model if all observations had a fixed value of a feature, in this case - alcohol content'}
 knitr::include_graphics('images/1-4-11pdp.png')
 ```
 
-Next, we used Partial Dependence Plot to examine an overall effect the alcohol content has on our predictions. This time, we used all of our models. As expected, tree-based model (XGBoost, GradientBoosting and Random Forest) behave very similarly, while SVM stands out from the rest. However, the main trend is the same - generally, stronger wines are more likely to be good than the weaker ones. Most models reach their lows at just below 10% alcohol content and plateau around 12%.
+Next, we used Partial Dependence Plot from *DALEX* package  [@dalex] to examine an overall effect the alcohol content has on our predictions. PDP tells us what would the average prediction be, if all observations had a fixed value of certain variable. This time, we used all of our models. As expected, tree-based model (XGBoost, GradientBoosting and Random Forest) behave very similarly, while SVM stands out from the rest. However, the main trend is the same - generally, stronger wines are more likely to be good than the weaker ones. Most models reach their lows at just below 10% alcohol content and plateau around 12%.
 
 
-We have to keep in mind that our data contains only one wine that exceeds 14% alcohol content, which may explain the flat line after that mark for the tree-based models. It should be noted that this strongest wine was actually ranked as not good. The fact that the line representing SVM model keeps increasing in value throughout the whole range may indicate that this model is more prone to outliers and doesn't capture complex interactions as well as other models. It coincides with our prior knowledge of the models and the accuracy scores they achieved.  
+We have to keep in mind that our data contains only one wine that exceeds 14% alcohol content, which may explain the flat line after that mark for tree-based models. It should be noted that this strongest wine was actually ranked as not good. The fact that the line representing SVM model keeps increasing in value throughout the whole range may indicate that this model is more prone to outliers and doesn't capture complex interactions as well as other models. It coincides with our prior knowledge of the models and the accuracy scores they achieved.  
 
 #### ALE
 
-```{r ale, out.width="700", fig.align="center", echo=FALSE, fig.cap='Accumulated Local Effects Plot for all models'}
+```{r ale, out.width="700", fig.align="center", echo=FALSE, fig.cap='Accumulated Local Effects Plot for all models. Lines represent how predictions change in a small range around the value of a feature, in this case - alcohol content.'}
 knitr::include_graphics('images/1-4-10ale.png')
 ```
 
-In order to take into account possible interactions concerning our variable, we generated an ALE plot using all of the models. The results turned out to be quite similar to PDP. It makes sense, considering the fact that our dataset doesn't contain many strongly corelated variables, and the one that is related the most to alcohol, the density' doesn't have a very big impact on the predictions made by the models. The most visible difference is probably the way SVM behaves for biggest alcohol values - it doesn't seem to differ as much from the other models compared to previous plot.
+In order to take into account possible interactions concerning our variable, we generated an ALE plot using all of the models [@xai1-ale]. This methods shows us how model predictions change in a small "window" of the feature around certain value for data instances in that window. The results turned out to be quite similar to PDP. It makes sense, considering the fact that our dataset doesn't contain many strongly corelated variables, and the one that is related the most to alcohol, the density, doesn't have a very significant impact on the predictions made by the models. The most visible difference is probably the way SVM behaves for the biggest alcohol values - it doesn't seem to differ as much from the other models as in the previous plot.
 
 ### Local explanations
 
 #### Break Down and Shapley Additive Explanations (SHAP) 
-The first method that we have used for our local explanations is Shapley Additive Explanations (SHAP). It is based on another explanatory method called Break-Down, which similarly to SHAP is used to compute variables' attribution to the model's prediction. Break-Down method fixes values of variables in sequence and looks at changes in label value. Moreover, as we can see in figure \*.\* this method is sensitive to the order of variables.
+The first method that we have used for our local explanations is Shapley Additive Explanations (SHAP). It is based on another explanatory method called Break-Down, which similarly to SHAP is used to compute variables' attribution to the model's prediction [@xai1-breakdown]. Break-Down method fixes values of variables in sequence and looks at changes in label value. Moreover, as we can see in figure \*.\* this method is sensitive to the order of variables.
 ```{r breakdownplot, out.width="700", fig.align="center", echo=FALSE}
 knitr::include_graphics('images/1-4-05breakdown_plots.png')
 ```
 All three presented plots describe the same observation with different sequences of examined variables. When density was fixed as the first one, it showed a great positive impact on rising wine's rating. However, the second plot presents a situation where density was third fixed variable and its value lowered the prediction. This dependency on order made it harder for us to conclude about specific wines. Fortunately
-Shapley Additive Explanations method (SHAP) resolves this issue by averaging results for different permutations of variables.As an example, you can see computed Shapley values for same observation in figure \*.\*
+Shapley Additive Explanations method (SHAP) resolves this issue by averaging results for different permutations of variables [@xai1-shapleyvalues]. As an example, you can see computed Shapley values for same observation in figure \*.\*
 ```{r shapplot97, out.width="700", fig.align="center", echo=FALSE}
 knitr::include_graphics('images/1-4-06shap_97.png')
 ```
@@ -141,7 +133,7 @@ knitr::include_graphics('images/1-4-07shap19.png')
 
 #### LIME
 
-In order to look at the explainability of individual predictions, the LIME^13^ method from *DALEX*^10^ package was used. When looking at individual visualizations, it is easy to see that extreme alcohol values have the greatest impact on the prediction value. This is clearly visible on the example of incorrectly classified observations - in a significant number of cases it is the non-standard value of alcohol that largely determines the incorrect prediction. The situation is well illustrated by two graphs generated on the basis of 16 previously selected observations - here: badly classified, analyzing the *XGBoost* model.
+In order to look at the explainability of individual predictions, the LIME method from *DALEX* package was used [@dalex]. When looking at individual visualizations, it is easy to see that extreme alcohol values have the greatest impact on the prediction value. This is clearly visible on the example of incorrectly classified observations - in a significant number of cases it is the non-standard value of alcohol that largely determines the incorrect prediction. The situation is well illustrated by two graphs generated on the basis of 16 previously selected observations - here: badly classified, analyzing the *XGBoost* model.
 
 ```{r lime1, out.width="700", fig.align="center", echo=FALSE, fig.cap='LIME method: example 1'}
 knitr::include_graphics('images/1-4-06LIME1.png')
@@ -181,7 +173,7 @@ The idea of a threshold of an alcohol content, beyond which wines lose their qua
 changed dramatically with the level of ethanol content in the wine, but the change isn't consistent among all chemical compounds.  
 
 
-Another very interesting topic is the idea of reducing  the alcohol content in wine after initial production process [@1-4-wines-jordao]. Motivation behind that is to try to keep all the good aromas and qualities associated with stronger wines, while simultaneously lowering excessive alcohol which causes bitter or sour tastes. Such attempts ended in mixed results, but evidence suggests that it may be possible to lower alcohol content by one percentage point without losing many aromas.
+Another very interesting topic is the idea of reducing  the alcohol content in wine after initial production process [@1-4-wines-jordao]. Motivation behind such actions is to try to keep all the good aromas and qualities associated with stronger wines, while simultaneously lowering excessive alcohol which causes bitter or sour tastes. Such attempts ended in mixed results, but evidence suggests that it may be possible to lower alcohol content by one percentage point without losing many aromas.
 
 
 
@@ -194,56 +186,7 @@ The analysis of the results of modern methods of explainable artificial intellig
 
 The experiment is undoubtedly successful and with a high degree of certainty confirms two facts: firstly, the quality of the wines is dependent on their higher alcohol content, but up to a certain threshold and secondly, modern methods of explainable artificial intelligence provides us valuable results that bring new valuable information about the black box models, which at the same time are consistent with the nature of the data sets on which they were made. Different approaches provide us with various useful information and it is difficult to indicate better or worse solutions - the seven methods mentioned complement each other in their own way, but each allows us to look at the problem of analysis from a different perspective.
 
-Leaving aside our succesful implementation of XAI solutions, one must bear in mind,  that the results of the experiment need to be put in a certain perspective. It must be remembered that the world of wines is a very diverse one. For example, artificially fortified wines like Port wine or Sherry should be considered separately. The discussed data set concerns only a certain group of wines and we don't know enoguh about the experts or conditions of the tastings to call the data entirely representative. Therefore, we should remain cautious when drawing any far-reaching conclusions. Nevertheless, the conducted research approximates the idea of the overall effect of alcohol on the quality of wine and confirms previous research by experts from a biochemical point of view.
+Leaving aside our succesful implementation of XAI solutions, one must bear in mind,  that the results of the experiment need to be put in a certain perspective. It must be remembered that the world of wines is a very diverse one. For example, artificially fortified wines like port wine or sherry should be considered separately. The discussed data set concerns only a certain group of wines and we don't know enoguh about the experts or conditions of the tastings to call the data entirely representative. Therefore, we should remain cautious when drawing any far-reaching conclusions. Nevertheless, the conducted research approximates the idea of the overall effect of alcohol on the quality of wine and confirms previous research by experts from a biochemical point of view.
 
-### References
 
-*^1^Red Wine Quality dataset: simple and clean practice dataset for regression or classification modelling*
-https://www.kaggle.com/uciml/red-wine-quality-cortez-et-al-2009
 
-*^2^AdaBoost: AdaBoost, short for Adaptive Boosting, is a statistical classification meta-algorithm formulated by Yoav Freund and Robert Schapire, who won the 2003 Gödel Prize for their work*
-https://en.wikipedia.org/wiki/AdaBoost
-
-*^3^XGBoost Python package*
-https://xgboost.readthedocs.io/en/latest/python/index.html
-
-*^4^RandomizedSearchCV from sklearn*
-https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.RandomizedSearchCV.html
-
-*^5^Support Vector Machine from sklearn*
-https://scikit-learn.org/stable/modules/svm.html
-
-*^6^GridSearchCV from sklearn*
-https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.GridSearchCV.html
-
-*^7^Decision tree: a flowchart-like structure in which each internal node represents a "test" on an attribute (e.g. whether a coin flip comes up heads or tails), each branch represents the outcome of the test, and each leaf node represents a class label (decision taken after computing all attributes)*
-https://en.wikipedia.org/wiki/Decision_tree
-
-*^8^Random Forest classifier from sklearn*
-https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html
-
-*^9^Gradient Boosting classifier from sklearn*
-https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.GradientBoostingClassifier.html
-
-*^10^DALEX: moDel Agnostic Language for Exploration and eXplanation*
-https://github.com/ModelOriented/DALEX
-
-*^11^Permutation-based variable importance: model inspection technique that can be used for any fitted estimator when the data is tabular. This is especially useful for non-linear or opaque estimators. The permutation feature importance is defined to be the decrease in a model score when a single feature value is randomly shuffled*
-https://scikit-learn.org/stable/modules/permutation_importance.html
-
-*^12^SHAP(SHapley Additive exPlanations): game theoretic approach to explain the output of any machine learning model. It connects optimal credit allocation with local explanations using the classic*
-https://shap.readthedocs.io/en/latest/index.html
-
-*^13^LIME(Local Interpretable Model-agnostic Explanations): visualization technique that helps explain individual predictions. It is model agnostic so it can be applied to any supervised regression or classification model*
-
-*^14^Cult Wines: Wine’s alcohol levels explained, 5th June 2019*
-https://www.wineinvestment.com/wine-blog/2019/05/wines-alcohol-levels-explained
-
-*^15^The Seattle Times: Does a higher alcohol content mean it's a better drinking wine?, 8th October 2003*
-https://archive.seattletimes.com/archive/?date=20031008&slug=wineqanda08
-
-*^16^Decanter: Alcohol levels: the balancing act, 22nd March 2010*
-https://www.decanter.com/features/alcohol-levels-the-balancing-act-246426/
-
-*^17^MDPI: From Sugar of Grape to Alcohol of Wine: Sensorial Impact of Alcohol in Wine, 30th August 2015*
-https://www.mdpi.com/2306-5710/1/4/292/htm
